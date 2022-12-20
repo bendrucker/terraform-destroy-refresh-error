@@ -1,0 +1,27 @@
+name: Test Terraform Destroy
+on:
+  workflow_dispatch: {}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        terraform_version:
+          - '1.2.0'
+          - '1.2.9'
+          - '1.3.0'
+          - '1.3.4'
+          - '1.3.5'
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ matrix.terraform_version }}
+      - run: terraform init
+      - name: terraform apply
+        run: terraform apply -auto-approve
+      - name: terraform state rm
+        run: terraform state rm null_resource.a
+      - run: terraform refresh
+      - name: terraform destroy
+        run: terraform destroy -auto-approve
