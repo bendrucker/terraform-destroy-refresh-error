@@ -21,7 +21,7 @@ jobs:
       - name: terraform apply
         run: terraform apply -auto-approve
       - name: terraform state rm
-        run: terraform state rm null_resource.a
+        run: terraform state rm null_resource.test
       - run: terraform refresh
       - name: terraform destroy
         run: terraform destroy -auto-approve
